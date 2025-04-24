@@ -1,0 +1,34 @@
+#include "charmm36.ff/forcefield.itp"
+
+; additional params for the molecule
+#include "nora.prm"
+
+#include "nora.itp"
+
+; Include Position restraint file
+#ifdef POSRES
+#include "nora_ini_posres.itp"
+#endif
+
+#include "charmm36.ff/tip3p.itp"
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct		 fcx		fcy		   fcz
+   1	1		1000	   1000		  1000
+#endif
+
+; Include topology for ions
+#include "charmm36.ff/ions.itp"
+
+; Include acetonitrile topology
+#include "acn.itp"
+
+[ system ]
+; Name
+mol
+
+[ molecules ]
+; Compound		  #mols
+nora			1
+

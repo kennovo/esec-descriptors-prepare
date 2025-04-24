@@ -1,0 +1,55 @@
+             :-) GROMACS - gmx solvate, 2022.5-Debian_2022.5_2 (-:
+
+Executable:   /usr/bin/gmx
+Data prefix:  /usr
+Working dir:  /home/pdegauqu/externe_testset_neutraal_04032025/neutraal_expliciet/nora
+Command line:
+  gmx solvate -cp newbox.gro -cs -o solvated-neutral.gro -p nora.top
+
+Reading solute configuration
+Reading solvent configuration
+
+Initialising inter-atomic distances...
+
+WARNING: Masses and atomic (Van der Waals) radii will be guessed
+         based on residue and atom names, since they could not be
+         definitively assigned from the information in your input
+         files. These guessed numbers might deviate from the mass
+         and radius of the atom type. Please check the output
+         files if necessary. Note, that this functionality may
+         be removed in a future GROMACS version. Please, consider
+         using another file format for your input.
+
+NOTE: From version 5.0 gmx solvate uses the Van der Waals radii
+from the source below. This means the results may be different
+compared to previous GROMACS versions.
+
+++++ PLEASE READ AND CITE THE FOLLOWING REFERENCE ++++
+A. Bondi
+van der Waals Volumes and Radii
+J. Phys. Chem. 68 (1964) pp. 441-451
+-------- -------- --- Thank You --- -------- --------
+
+Generating solvent configuration
+Will generate new solvent configuration of 2x2x2 boxes
+Solvent box contains 3267 atoms in 1089 residues
+Removed 906 solvent atoms due to solvent-solvent overlap
+Removed 927 solvent atoms due to solute-solvent overlap
+Sorting configuration
+Found 1 molecule type:
+    SOL (   3 atoms):   478 residues
+Generated solvent containing 1434 atoms in 478 residues
+Writing generated configuration to solvated-neutral.gro
+
+Output configuration contains 2099 atoms in 586 residues
+Volume                 :     24.3011 (nm^3)
+Density                :     907.582 (g/l)
+Number of solvent molecules:    478   
+
+Processing topology
+
+Back Off! I just backed up nora.top to ./#nora.top.2#
+
+GROMACS reminds you: "You Can Always Go On Ricky Lake" (Offspring)
+
+Adding line for 478 solvent molecules with resname (SOL) to topology file (nora.top)

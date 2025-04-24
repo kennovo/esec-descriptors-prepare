@@ -1,0 +1,17 @@
+Setting the LD random seed to -23404161
+
+Generated 167799 of the 167910 non-bonded parameter combinations
+
+Generated 117519 of the 167910 1-4 parameter combinations
+
+Excluding 3 bonded neighbours molecule type 'nora'
+
+Excluding 3 bonded neighbours molecule type 'ACN'
+
+Excluding 2 bonded neighbours molecule type 'SOL'
+Analysing residue names:
+There are:   108      Other residues
+There are:   478      Water residues
+Analysing residues not classified as Protein/DNA/RNA/Water and splitting into groups...
+
+This run will generate roughly 0 Mb of data

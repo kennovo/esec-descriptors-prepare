@@ -1,0 +1,25 @@
+             :-) GROMACS - gmx editconf, 2022.5-Debian_2022.5_2 (-:
+
+Executable:   /usr/bin/gmx
+Data prefix:  /usr
+Working dir:  /home/pdegauqu/externe_testset_neutraal_04032025/neutraal_expliciet/nora
+Command line:
+  gmx editconf -f nora_ini.pdb -o box.gro -bt cubic -d 1.0
+
+
+GROMACS reminds you: "C has the power of assembly language and the convenience of... assembly language." (Dennis Ritchie)
+
+Note that major changes are planned in future for editconf, to improve usability and utility.
+Read 23 atoms
+No velocities found
+    system size :  0.665  0.444  0.590 (nm)
+    diameter    :  0.897               (nm)
+    center      : -0.262  0.156  0.265 (nm)
+    box vectors :  0.000  0.000  0.000 (nm)
+    box angles  :   0.00   0.00   0.00 (degrees)
+    box volume  :   0.00               (nm^3)
+    shift       :  1.711  1.293  1.183 (nm)
+new center      :  1.448  1.448  1.448 (nm)
+new box vectors :  2.897  2.897  2.897 (nm)
+new box angles  :  90.00  90.00  90.00 (degrees)
+new box volume  :  24.30               (nm^3)

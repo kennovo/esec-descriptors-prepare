@@ -1,0 +1,39 @@
+#!/bin/sh
+if [ $# -eq 0 ] ; then
+  echo "Usage: `basename $0` <subdirectories with compounds...>" >&2
+  exit 1
+ fi
+for i in $* ; do
+  if [ ! -d "$i" ] ; then
+    echo "Warning: skipping $i (not a directory)" >&2
+    continue
+   fi
+  unset skip
+  for j in psf mol2 ; do
+    if [ ! -s "$i/$i.$j" ] ; then
+      echo "Warning: skipping $i ( $i/$i.$j not found or empty)" >&2
+      skip=1
+      break
+     fi
+   done
+  [ "$skip" ] && continue
+  if [ -s "$i/${i}_prop.xyz" ] ; then
+    if ! awk '{if ($3+0 != 0) exit 1}' "$i/${i}_prop.xyz" ; then
+      echo "Warning: skipping $i ( $i/${i}_prop.xyz already processed?)" >&2
+      continue
+     fi
+    [ -s "$i/${i}0prop.xyz" ] || mv "$i/${i}_prop.xyz" "$i/${i}0prop.xyz"
+   fi
+  obabel -imol2 "$i/$i.mol2" --partialcharge gasteiger -omol2 | awk -v psf="$i/$i.psf" '
+    BEGIN{while(getline) if ($0 ~ "^@<TRIPOS>ATOM") break;
+      while(getline < psf) if ($2 == "!NATOM") break}
+    /^@<TRIPOS>/{while(getline < psf) {if (NF<8) exit 0;
+        att=$6;mas=$8;if(att != "LPH" || mas != 0) exit 1;
+        printf("%12.6f%12.6f%12.6f\t%s\n",mas,$7,0,att)} }
+    { g=$9;getline < psf; if (NF<8) exit 1;
+      printf("%12.6f%12.6f%12.6f\t%s\n",$8,$7,g,$6)}' >"$i/${i}_prop.xyz"
+  if [ $? -ne 0 ] ; then
+    echo "FATAL ERROR (different #atoms in $i/$i.mol2 and $i/$i.psf ?)" >&2
+    break
+   fi
+ done

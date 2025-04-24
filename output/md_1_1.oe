@@ -1,0 +1,62 @@
+                      :-) GROMACS - gmx mdrun, 2023.3 (-:
+
+Executable:   /apps/brussel/RL8/zen2-ib/software/GROMACS/2023.3-foss-2022a-CUDA-11.7.0/bin/gmx
+Data prefix:  /apps/brussel/RL8/zen2-ib/software/GROMACS/2023.3-foss-2022a-CUDA-11.7.0
+Working dir:  /rhea/scratch/brussel/105/vsc10543/neutraal_expliciet_hydra/nora
+Command line:
+  gmx mdrun -nt 16 -deffnm md_1_1 -nb gpu
+
+Reading file md_1_1.tpr, VERSION 2022.5-Debian_2022.5_2 (single precision)
+Note: file tpx version 127, software tpx version 129
+Changing nstlist from 20 to 100, rlist from 1.204 to 1.313
+
+Update groups can not be used for this system because atoms that are (in)directly constrained together are interdispersed with other atoms
+
+1 GPU selected for this run.
+Mapping of GPU IDs to the 2 GPU tasks in the 1 rank on this node:
+  PP:0,PME:0
+PP tasks will do (non-perturbed) short-ranged interactions on the GPU
+PP task will update and constrain coordinates on the CPU
+PME tasks will do all aspects on the GPU
+Using 1 MPI thread
+
+Non-default thread affinity set, disabling internal thread affinity
+
+Using 16 OpenMP threads 
+
+starting mdrun 'mol in water'
+50000000 steps, 100000.0 ps.
+
+Writing final coordinates.
+
+               Core t (s)   Wall t (s)        (%)
+       Time:   111849.672     6990.605     1600.0
+                         1h56:30
+                 (ns/day)    (hour/ns)
+Performance:     1235.945        0.019
+
+GROMACS reminds you: "Problems worthy / of attack / prove their worth / by hitting back." (Piet Hein)
+
+	Command being timed: "gmx mdrun -nt 16 -deffnm md_1_1 -nb gpu"
+	User time (seconds): 111179.04
+	System time (seconds): 256.23
+	Percent of CPU this job got: 1593%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:56:31
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 216900
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 158
+	Minor (reclaiming a frame) page faults: 23049
+	Voluntary context switches: 116184
+	Involuntary context switches: 1304918
+	Swaps: 0
+	File system inputs: 28952
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

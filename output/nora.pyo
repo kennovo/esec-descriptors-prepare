@@ -1,0 +1,19 @@
+This script has been tested with NetworkX 2.5 .
+NOTE 1: Code tested with Python 3.5.2 and 3.7.3. Your version: 3.11.2 (main, Nov 30 2024, 21:22:50) [GCC 12.2.0]
+
+NOTE 2: Code tested with NetworkX 2.5. Your version: 2.8.8
+
+NOTE 3: Please be sure to use the same version of CGenFF in your simulations that was used during parameter generation:
+--Version of CGenFF detected in  nora.str : 4.6
+--Version of CGenFF detected in  charmm36.ff/forcefield.doc : 4.6
+
+NOTE 4: To avoid duplicated parameters, do NOT select the 'Include parameters that are already in CGenFF' option when uploading a molecule into CGenFF.
+============ DONE ============
+Conversion complete.
+The molecule topology has been written to nora.itp
+Additional parameters needed by the molecule are written to nora.prm, which needs to be included in the system .top
+
+PLEASE NOTE: If your topology has lone pairs, you must use GROMACS version 2020 or newer to use 2fd construction
+Older GROMACS versions WILL NOT WORK as they do not support 2fd virtual site construction
+
+============ DONE ============

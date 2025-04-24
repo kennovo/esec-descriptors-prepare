@@ -1,0 +1,43 @@
+; Created by cgenff_charmm2gmx.py
+
+[ moleculetype ]
+; Name			   nrexcl
+ACN				 3
+
+[ atoms ]
+;	 nr		  type	resnr residue  atom   cgnr	   charge		mass  typeB    chargeB		massB
+; residue	 1 ACN rtp ACN q	qsum
+     1      CG331      1    ACN     C1      1     -0.170     12.011   ;
+     2       HGA3      1    ACN    H11      2      0.090      1.008   ;
+     3       HGA3      1    ACN    H12      3      0.090      1.008   ;
+     4       HGA3      1    ACN    H13      4      0.090      1.008   ;
+     5      CG1N1      1    ACN     C2      5      0.360     12.011   ;
+     6      NG1T1      1    ACN     N3      6     -0.460     14.007   ;
+
+[ bonds ]
+;	ai	  aj funct			  c0			c1			  c2			c3
+    1     2	 1
+    1     3	 1
+    1     4	 1
+    1     5	 1
+    5     6	 1
+
+[ pairs ]
+;	ai	  aj funct			  c0			c1			  c2			c3
+    2     6	 1
+    3     6	 1
+    4     6	 1
+
+[ angles ]
+;	ai	  aj	ak funct			c0			  c1			c2			  c3
+    2     1     3	5
+    2     1     4	5
+    2     1     5	5
+    3     1     4	5
+    3     1     5	5
+    4     1     5	5
+    1     5     6	5
+
+[ dihedrals ]
+;	ai	  aj	ak	  al funct			  c0			c1			  c2			c3			  c4			c5
+
