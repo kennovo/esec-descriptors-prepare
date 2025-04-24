@@ -3,13 +3,18 @@ if [ $# -eq 0 ] ; then
   echo "Usage: `basename $0` <subdirectories with compounds...>" >&2
   exit 1
  fi
+par="`find . -name par_all36_cgenff.prm | head -n 1`"
+if [ ! -f "$par" ] ; then
+  echo "Error: parameter file par_all36_cgenff.prm not found" >&2
+  exit 1
+ fi
 for i in $* ; do
   if [ ! -d "$i" ] ; then
     echo "Warning: skipping $i (not a directory)" >&2
     continue
    fi
   unset skip
-  for j in psf mol2 ; do
+  for j in str mol2 ; do
     if [ ! -s "$i/$i.$j" ] ; then
       echo "Warning: skipping $i ( $i/$i.$j not found or empty)" >&2
       skip=1
@@ -24,14 +29,17 @@ for i in $* ; do
      fi
     [ -s "$i/${i}0prop.xyz" ] || mv "$i/${i}_prop.xyz" "$i/${i}0prop.xyz"
    fi
-  obabel -imol2 "$i/$i.mol2" --partialcharge gasteiger -omol2 | awk -v psf="$i/$i.psf" '
+  obabel -imol2 "$i/$i.mol2" --partialcharge gasteiger -omol2 | awk -v par="$par" -v str="$i/$i.str" '
     BEGIN{while(getline) if ($0 ~ "^@<TRIPOS>ATOM") break;
-      while(getline < psf) if ($2 == "!NATOM") break}
-    /^@<TRIPOS>/{while(getline < psf) {if (NF<8) exit 0;
-        att=$6;mas=$8;if(att != "LPH" || mas != 0) exit 1;
-        printf("%12.6f%12.6f%12.6f\t%s\n",mas,$7,0,att)} }
-    { g=$9;getline < psf; if (NF<8) exit 1;
-      printf("%12.6f%12.6f%12.6f\t%s\n",$8,$7,g,$6)}' >"$i/${i}_prop.xyz"
+      while(getline < str) if ($1 == "GROUP") break;
+      while(getline < par) {if ($1 == "BONDS") break;
+	if(cpy && $1 == "MASS") ms[$3]=$4;
+	if ($1 == "ATOMS") cpy=1} }
+    /^@<TRIPOS>/{while(getline < str) {if (NF<4) exit 0;
+        att=$3;mas=ms[att];if(att != "LPH" || mas != 0) exit 1;
+        printf("%12.6f%12.6f%12.6f\t%s\n",mas,$4,0,att)} }
+    { g=$9;getline < str; if (NF<4) exit 1;
+      att=$3;printf("%12.6f%12.6f%12.6f\t%s\n",ms[att],$4,g,att)}' >"$i/${i}_prop.xyz"
   if [ $? -ne 0 ] ; then
     echo "FATAL ERROR (different #atoms in $i/$i.mol2 and $i/$i.psf ?)" >&2
     break
