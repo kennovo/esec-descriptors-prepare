@@ -15,6 +15,8 @@ The following can be found in this repository:
 * **nora_descr.txt** , the descriptor file obtained from submitting output/nora_prop.xyz and output/nora.recenter.xyz to the web interface
 
 # Workflow
+Prerequisite: a Unix-like shell with access to python3, obabel and the GROMACS toolset.
+
 Note: in this description of the workflow, the molecule name (nora in the case of noradrenaline) is generalized to "**mol**".
 
 ## Adapt the .mol2 file
@@ -59,15 +61,17 @@ Add the text below to line 8-11 of the generated .top file.
 
 ## Add ACN to obtain a certain water/ACN ratio
 Example of the calculation for a water/ACN ratio of 60/40:
+
 Number of solvent molecules selected in previous step = 1000 (as example)
+
 For 40% ACN: 
--> 1000 / 6.02*10**23 /mol = 1.661*10**-21 mol
--> Divide by molecular mass of water: 1.661*10**-21 mol / 18 g/mol = 2.990*10**-20 g
--> Because density of water is 1 g/ml, 2.990*10**-20 g water = 2.990*10**-20 ml water
--> Multiply with 40%: 2.990*10**-20 ml * 0.4 = 1.196*10**-20 ml
--> Multiply with the density of ACN: 1.196*10**-20 ml * 0.786 g/ml = 9.401*10**-21 g
--> Divide by molecular mass of ACN: 9.401*10**-21 g / 41 g/mol = 2.293*10**-22 mol
--> Multiply with constant of Avogadro: 2.293*10**-22 mol * 6.02*10**23 /mol = 138 molecules
+- 1000 / 6.02*10**23 /mol = 1.661*10**-21 mol
+- Divide by molecular mass of water: 1.661*10**-21 mol / 18 g/mol = 2.990*10**-20 g
+- Because density of water is 1 g/ml, 2.990*10**-20 g water = 2.990*10**-20 ml water
+- Multiply with 40%: 2.990*10**-20 ml * 0.4 = 1.196*10**-20 ml
+- Multiply with the density of ACN: 1.196*10**-20 ml * 0.786 g/ml = 9.401*10**-21 g
+- Divide by molecular mass of ACN: 9.401*10**-21 g / 41 g/mol = 2.293*10**-22 mol
+- Multiply with constant of Avogadro: 2.293*10**-22 mol * 6.02*10**23 /mol = 138 molecules
 
 Add the number of molecules to the code:
 
@@ -90,9 +94,9 @@ Add the number of ACN molecules to line 34 of the .top file.
 Example:
 
     [ molecules ]
-    ; Compound		  #mols
-    mol			1
-    ACN		    138
+    ; Compound        #mols
+    mol         1
+    ACN         138
     SOL         605
 
 
@@ -122,7 +126,7 @@ This enables
 
 ## Add additional atomic properties (e.g. Gasteiger charge, atomic properties, etc.) for each molecule
 
-    ./addprops2 *mol1* *mol2* *mol3* ...
+    ./addprops2 mol1 mol2 mol3 ...
 
 ## Remove solvent, skip the first 200 frames and center the coordinates of the molecules
 As described in the paper, the descriptor calculations rely on the center of mass of the molecule being located at the origin for each frame!
