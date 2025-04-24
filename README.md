@@ -2,6 +2,7 @@
 This repository is a collection of scripts to facilitate running explicit solvent Molecular Dynamics simulations on small organic molecules for the purpose of calculating Ensemble Steric and Electrostatic Chirality" (ESEC) descriptors. The end product of this workflow consists of:
 * A _prop.xyz file which is a space-separated plain text table containing, for each atom of the small organic molecule, its mass, CGenFF charge, Gasteiger charge and CGenFF atom type.
 * A .recenter.xyz file which is a raw trajectory of the molecule, consisting only of Cartesian coordinates (in the same order as the _prop.xyz file and repeated as many times as there are trajectory frames). The format is also space-separated plain text.
+
 These two files can then be submitted to [kenno.org/esec-descriptors](https://kenno.org/esec-descriptors/) to obtain the final descriptor values.
 
 The workflow is based on GROMACS, but since the input for the web interface is simple and software-agnostic, the workflow can straightforwardly be adapted to other programs.
