@@ -1,7 +1,9 @@
+<img src="https://kenno.org/esec-descriptors/esec-logo1web.png" width="587" height="329" style="display:block;margin-left:auto;margin-right:auto">
+
 # Overview
 This repository is a collection of scripts to facilitate running explicit solvent Molecular Dynamics (MD) simulations on small organic molecules for the purpose of calculating Ensemble Steric and Electrostatic Chirality (ESEC) descriptors. The end product of this workflow consists of:
-* A _prop.xyz file which is a space-separated plain text table containing, for each atom of the small organic molecule, its mass, CGenFF charge, Gasteiger charge and CGenFF atom type.
-* A .recenter.xyz file which is a raw trajectory of the molecule, consisting only of Cartesian coordinates (in the same order as the _prop.xyz file and repeated as many times as there are trajectory frames). The format is also space-separated plain text.
+* A .prop file which is a space-separated plain text table containing, for each atom of the small organic molecule, its mass, CGenFF charge, Gasteiger charge and CGenFF atom type.
+* A .traj.xyz file which is a raw trajectory of the molecule, consisting only of Cartesian coordinates (in the same order as the .prop file and repeated as many times as there are trajectory frames). The format is also space-separated plain text.
 
 These two files can then be submitted to [kenno.org/esec-descriptors](https://kenno.org/esec-descriptors/) to obtain the final descriptor values.
 
@@ -12,7 +14,7 @@ The following can be found in this repository:
 * the **scripts** directory: the necessary scripts and data files for the workflow
 * the **input** directory, with all necessary files for preparing and running GROMACS on the example of (protonated) noradrenaline directory in 40% acetonitrile
 * the **output** directory, containing the corresponding MD output
-* **nora_descr.txt** , the descriptor file obtained from submitting output/nora_prop.xyz and output/nora.recenter.xyz to the web interface
+* **nora_descr.txt** , the descriptor file obtained from submitting output/nora.prop and output/nora.traj.xyz to the web interface
 
 # Workflow
 Prerequisite: a Unix-like shell with access to python3, obabel and the GROMACS tool set.
@@ -132,7 +134,6 @@ Adapt line 19 in the gromacs.sh file by adding the directory names of the molecu
 
     ./addprops2 mol1 mol2 mol3 ...
 
-## Remove solvent, skip the first 200 frames and center the coordinates of the molecules
-As described in the paper, the descriptor calculations rely on the center of mass of the molecule being located at the origin for each frame!
+## Remove solvent, skip the first 200 frames and convert to "flat" trajectory file
 
-    ./gmxrecent1.sh 200 >gmxrecent1.sho 2>&1 &
+    ./gmx2xyz.sh 200 >gmx2xyz.sho 2>&1 &

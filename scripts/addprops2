@@ -22,12 +22,12 @@ for i in $* ; do
      fi
    done
   [ "$skip" ] && continue
-  if [ -s "$i/${i}_prop.xyz" ] ; then
-    if ! awk '{if ($3+0 != 0) exit 1}' "$i/${i}_prop.xyz" ; then
-      echo "Warning: skipping $i ( $i/${i}_prop.xyz already processed?)" >&2
+  if [ -s "$i/${i}.prop" ] ; then
+    if ! awk '{if ($3+0 != 0) exit 1}' "$i/${i}.prop" ; then
+      echo "Warning: skipping $i ( $i/${i}.prop already processed?)" >&2
       continue
      fi
-    [ -s "$i/${i}0prop.xyz" ] || mv "$i/${i}_prop.xyz" "$i/${i}0prop.xyz"
+    [ -s "$i/${i}.prop0" ] || mv "$i/${i}.prop" "$i/${i}.prop0"
    fi
   obabel -imol2 "$i/$i.mol2" --partialcharge gasteiger -omol2 | awk -v par="$par" -v str="$i/$i.str" '
     BEGIN{while(getline) if ($0 ~ "^@<TRIPOS>ATOM") break;
@@ -39,7 +39,7 @@ for i in $* ; do
         att=$3;mas=ms[att];if(att != "LPH" || mas != 0) exit 1;
         printf("%12.6f%12.6f%12.6f\t%s\n",mas,$4,0,att)} }
     { g=$9;getline < str; if (NF<4) exit 1;
-      att=$3;printf("%12.6f%12.6f%12.6f\t%s\n",ms[att],$4,g,att)}' >"$i/${i}_prop.xyz"
+      att=$3;printf("%12.6f%12.6f%12.6f\t%s\n",ms[att],$4,g,att)}' >"$i/${i}.prop"
   if [ $? -ne 0 ] ; then
     echo "FATAL ERROR (different #atoms in $i/$i.mol2 and $i/$i.psf ?)" >&2
     break
