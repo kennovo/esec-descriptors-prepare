@@ -10,12 +10,12 @@ The MD workflow is based on GROMACS, but since the input for the web interface i
 The following can be found in this repository:
 * the present **README.md** file, the remainder of which describes the workflow step by step
 * the **scripts** directory: the necessary scripts and data files for the workflow
-* the **input** directory, with all necessary files for preparing an running GROMACS on the example of (protonated) noradrenaline directory in 40% acetonitrile
+* the **input** directory, with all necessary files for preparing and running GROMACS on the example of (protonated) noradrenaline directory in 40% acetonitrile
 * the **output** directory, containing the corresponding MD output
 * **nora_descr.txt** , the descriptor file obtained from submitting output/nora_prop.xyz and output/nora.recenter.xyz to the web interface
 
 # Workflow
-Prerequisite: a Unix-like shell with access to python3, obabel and the GROMACS toolset.
+Prerequisite: a Unix-like shell with access to python3, obabel and the GROMACS tool set.
 
 Note: in this description of the workflow, the molecule name (nora in the case of noradrenaline) is generalized to "**mol**".
 
@@ -23,7 +23,7 @@ Note: in this description of the workflow, the molecule name (nora in the case o
 Within the .mol2 file, adjust "*****" on line 2 to a name that refers to your molecule, but ensure it is no more than 4 characters long. 
 
 ## Create a CGenFF .str file
-...either with the CGenFF web app or a local CGenFF binary. Both are avaialle at [cgenff.com](https://cgenff.com) and free-of-charge for academic use.
+...either with the CGenFF web app or a local CGenFF binary. Both are available at [cgenff.com](https://cgenff.com) and free-of-charge for academic use.
 
 ## Generate files from the .mol2 and .str files
 
@@ -55,42 +55,44 @@ Add the text below to line 8-11 of the generated .top file.
 
     tee box.gro.in | gmx editconf -f mol_ini.pdb -o box.gro -bt cubic -d 1.0 2>&1 | tee box.gro.oe
 
-## Solvate with water
+## Solvate
+### Add water
 
     gmx solvate -cp box.gro -cs -o water_solv.gro -p mol.top
+&nbsp;
+<details>
+<summary>Optional steps for solvent mixtures (for the example of water:ACN 60:40)</summary>
 
-## Add ACN to obtain a certain water/ACN ratio
-Example of the calculation for a water/ACN ratio of 60/40:
-
-Number of solvent molecules selected in previous step = 1000 (as example)
+### Add ACN to obtain a certain water/ACN ratio
+Number of water molecules added in previous step = 1000 (as an example)
 
 For 40% ACN: 
-- 1000 / 6.02*10**23 /mol = 1.661*10**-21 mol
-- Divide by molecular mass of water: 1.661*10**-21 mol / 18 g/mol = 2.990*10**-20 g
-- Because density of water is 1 g/ml, 2.990*10**-20 g water = 2.990*10**-20 ml water
-- Multiply with 40%: 2.990*10**-20 ml * 0.4 = 1.196*10**-20 ml
-- Multiply with the density of ACN: 1.196*10**-20 ml * 0.786 g/ml = 9.401*10**-21 g
-- Divide by molecular mass of ACN: 9.401*10**-21 g / 41 g/mol = 2.293*10**-22 mol
-- Multiply with constant of Avogadro: 2.293*10**-22 mol * 6.02*10**23 /mol = 138 molecules
+- 1000 / 6.02 10<sup>23</sup> /mol = 1.661 10<sup>-21</sup> mol
+- Divide by molecular mass of water: 1.661 10<sup>-21</sup> mol / 18 g/mol = 2.990 10<sup>-20</sup> g
+- Because density of water is 1 g/ml, 2.990 10<sup>-20</sup> g water = 2.990 10<sup>-20</sup> ml water
+- Multiply with 40%: 2.990 10<sup>-20</sup> ml * 0.4 = 1.196 10<sup>-20</sup> ml
+- Multiply with the density of ACN: 1.196 10<sup>-20</sup> ml * 0.786 g/ml = 9.401 10<sup>-21</sup> g
+- Divide by molecular mass of ACN: 9.401 10<sup>-21</sup> g / 41 g/mol = 2.293 10<sup>-22</sup> mol
+- Multiply with constant of Avogadro: 2.293 10<sup>-22</sup> mol * 6.02 10<sup>23</sup> /mol = 138 molecules
 
-Add the number of molecules to the code:
+Add the number of ACN molecules to the code:
 
     tee newbox.gro.in | gmx insert-molecules -ci acn.pdb -f box.gro -nmol 138 -o newbox.gro 2>&1 | tee newbox.gro.oe
 
 
-## Remove line 27 in the .top file
-Line 27 corresponds to the total number of water molecules (SOL).
+### Delete the originally added water molecules...
+...by removing the line of the .top file that specifies the number of water molecules (**SOL**; line 27 in this example).
 
-## Fill the rest of the box with water molecules
+### Fill the remaining empty space with water molecules
 
     tee solvated-neutral.gro.in | gmx solvate -cp newbox.gro -cs -o solvated-neutral.gro -p mol.top 2>&1 | tee solvated-neutral.gro.oe
 
-## Check the water/ACN ratio
-From the previous step you obtain the number of water molecules. Examine whether the amount of water is approximately 60%.
-For example, the total number of molecules is 1000 and you obtain 605 molecules in the previous step. The ratio is then 605 / 1000 = 0,605 ~ 60%
+### Check the water/ACN ratio
+If the original number of water molecules (before adding ACN) was 1000 and the final number of water molecules (from the previous step) is 605, then the ratio is 605 / 1000 = 0,605 ~ 60% (fraction of available volume occupied by water). This is a rough estimate, but if it deviates too much from the target ratio, the number of ACN molecules may need to be adjusted.
 
-## Add the number of ACN molecules to the .top file
-Add the number of ACN molecules to line 34 of the .top file. 
+### Add the number of ACN molecules to the .top file
+Add the number of ACN molecules to the appropriate line (line 34 in this example) of the .top file.
+
 Example:
 
     [ molecules ]
@@ -99,6 +101,8 @@ Example:
     ACN         138
     SOL         605
 
+</details>
+&nbsp;
 
 ## When the molecule is ionized:
 
@@ -112,11 +116,11 @@ Example:
 Adapt line 19 in the gromacs.sh file by adding the directory names of the molecules to be simulated.
 
 ## Change the name of the .top file
-This enables 
+(Alternatively, the gromacs.sh can be made to point to the correct mol.top for each directory it processes.)
 
     mv mol.top top.top
 
-## Run following code for energy minimization and equilibration
+## Run energy minimization and equilibration
 
     nohup time nice -n 16 ./gromacs.sh </dev/null >gromacs.oe 2>&1 &
 
@@ -124,7 +128,7 @@ This enables
 
     gmx mdrun -deffnm md_1 -nb gpu 
 
-## Add additional atomic properties (e.g. Gasteiger charge, atomic properties, etc.) for each molecule
+## Add additional atomic properties (such as Gasteiger charge) for each molecule
 
     ./addprops2 mol1 mol2 mol3 ...
 
